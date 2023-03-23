@@ -2,10 +2,32 @@ pipeline {
     agent any
 
     stages {
-        stage('Teste') {
+        stage('Checkout sources') {
             steps {
-                echo 'Teste'
+                git url:'https://github.com/deividfae/pedelogo-catalogo.git', branch: 'main'
             }
+        }
+
+        stage('Build image') {
+            steps {
+                script {
+                    dockerapp = docker.build("deividfae/api-produto:${env.BUILD_ID}"),
+                      '-f ./src/PedeLogo.Catalogo.Api/Dockefile .'
+                }
+
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        docker.push('latest')
+                        docker.push("${env.BUILD_ID}")
+                    }
+                }
+            }
+
         }
 
     }
