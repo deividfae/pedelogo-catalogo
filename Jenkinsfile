@@ -8,19 +8,11 @@ pipeline {
             }
         }
 
-        stage('Install Docker') {
-            steps {
-                script {
-                    sh 'curl -fsSL https://get.docker.com -o get-docker.sh'
-                    sh 'sudo sh get-docker.sh'
-                    sh 'sudo usermod -aG docker jenkins'
-                }
-            }
-        }
         stage('Build image') {
             steps {
                 script {
-                    sh "docker build -t deividfae/api-produto:${env.BUILD_ID} -f ./src/PedeLogo.Catalogo.Api/Dockefile ."
+                    dockerapp = docker.build("docker build -t deividfae/api-produto:${env.BUILD_ID}",
+                     '-f ./src/PedeLogo.Catalogo.Api/Dockefile .')
                 }            
             }
         }
