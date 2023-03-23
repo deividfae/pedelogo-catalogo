@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     dockerapp = docker.build("deividfae/api-produto:${env.BUILD_ID}",
-                      '-f ./src/PedeLogo.Catalogo.Api/src/Dockefile .')
+                      '-f ./src/PedeLogo.Catalogo.Api/Dockefile .')
                 }
 
             }
