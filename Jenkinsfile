@@ -11,8 +11,8 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    dockerapp = docker.build("deividfae/api-produto:${env.BUILD_ID}"),
-                      '-f ./src/PedeLogo.Catalogo.Api/Dockefile .'
+                    dockerapp = docker.build("deividfae/api-produto:${env.BUILD_ID}",
+                      '-f ./src/PedeLogo.Catalogo.Api/Dockefile .')
                 }
 
             }
