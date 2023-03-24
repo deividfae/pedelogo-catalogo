@@ -11,8 +11,18 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    dockerapp = docker.build("deividfae/api-produto:${env.BUILD_ID}",
-                     '-f ./src/PedeLogo.Catalogo.Api/Dockerfile .')
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        def dockerBuildArgs = [
+                            "--build-arg", "foo=bar",
+                            "--timeout=900" // definir o tempo limite para 900 segundos
+                        ]
+                        def dockerImage = docker.build(
+                            "deividfae/api-produto:${env.BUILD_ID}",
+                            "-f ./src/PedeLogo.Catalogo.Api/Dockerfile .",
+                            dockerBuildArgs
+                        )
+                        dockerImage.push()
+                    }
                 }            
             }
         }
